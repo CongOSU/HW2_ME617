@@ -1,18 +1,27 @@
 import sys
 
 class gearbox():
-    def __init__(self, prev, prevw_cin, mfgplan):
-        self.prev = prev
+    def __init__(self, wout, prevw_cin, mfgplan):
+        self.wout = wout
         self.prevw_cin = prevw_cin
         self.mfgplan = mfgplan
         self.w_cout = self.calc_wc()
-        self.f = g + h
-        self.g = calcg(self)
-        self.h = calch(self)
+        self.g = self.calcg()
+        self.h = self.calch()
+        self.f = self.g + self.h
+
     def calcg(self):
-        result = 1
-    def calcf(self):
-        result = 2
+        result = 0
+        a = ' '.join(filter(lambda x: x.isdigit(), self.mfgplan))
+        l = [int(x) for x in a.split(' ')]
+        for i in l:
+            result += gears[i]
+        return result
+
+    def calch(self):
+        more = int(gears[int(self.mfgplan[len(self.mfgplan) - 1])]*self.w_cout)/self.wout
+        if more
+        return result
     def calc_wc(self):
         result = 1
         # Splitting list by every two characters
@@ -54,30 +63,40 @@ def main():
     # Loop for DFS
     for problem in range(1, 7, 1):
         treeSearch = []
+        prev = []
+        globalprev = []
         # create depth 1
         for i in range(0, 10, 1):
             mfge = str(i)
-            treeSearch.append(gearbox(w_in, mfge))
+            treeSearch.append(gearbox(w_out[problem], w_in, mfge))
         # print i
         branchingFactor = []
-        prev = []
         count = 0
         c = 0
 
         while error == 2.5:
             count = count + 1
-            sorted(treeSearch, key=getKey)
+            treeSearch.sort(key=getKey, reverse=True)
+            #sorted(treeSearch, key=getKey)
             gearcheck = treeSearch.pop()
             recentg = gears[int(gearcheck.mfgplan[len(gearcheck.mfgplan) - 1])]
-            prev.append(gearcheck.w_cout)
+            if len(gearcheck.mfgplan) < 3:
+                recentg2 = '0'
+            else:
+                recentg2 = gears[int(gearcheck.mfgplan[len(gearcheck.mfgplan) - 3])]
+            globalprev.append(gearcheck.w_cout)
             # print(gearcheck.mfgplan)
             if len(gearcheck.mfgplan) < 2:
                 recento = 'N'
             else:
                 recento = gearcheck.mfgplan[len(gearcheck.mfgplan) - 2]
+            if len(gearcheck.mfgplan) < 4:
+                recento2 = 'N'
+            else:
+                recento2 = gearcheck.mfgplan[len(gearcheck.mfgplan) - 4]
 
             depth = ((len(gearcheck.mfgplan) - 1) / 2) + 1
-
+            print(calc_error(w_in, w_out[problem - 1], gearcheck.w_cout))
             if calc_error(w_in, w_out[problem - 1], gearcheck.w_cout) <= error:
                 print(calc_error(w_in, w_out[problem - 1], gearcheck.w_cout))
                 print(w_in)
@@ -90,15 +109,17 @@ def main():
             if depth < 10:
                 for i in range(0, 10, 1):
                     # if gear teeth are not within 30, do not add
+                    if gears[i] == recentg2:
+                        if recento2 == "M":
+                            continue
                     if abs(gears[i] - recentg) > 30:
                         continue
-
-                    newgear = gearbox(gearcheck.w_cout, (gearcheck.mfgplan + "M" + str(i)))
-                    for p in range(0, len(gearcheck.prev), 1):
-                        if newgear.w_cout == gearcheck.prev[p]:
+                    newgear = gearbox(w_out[problem], gearcheck.w_cout, (gearcheck.mfgplan + "M" + str(i)))
+                    for p in range(0, len(globalprev), 1):
+                        if newgear.w_cout == globalprev[p]:
                             continue
                     treeSearch.append(newgear)
-                    # print("adding M" + str(i))
+                    #print("adding M" + str(i))
                     childrenadded = childrenadded + 1
 
                 # if previous operation was a pair, do not add paired children or if it is first two depths
@@ -111,9 +132,9 @@ def main():
                     if gears[i] == recentg:
                         continue
                     # push onto stack
-                    newgear = gearbox(gearcheck.w_cout, (gearcheck.mfgplan + "P" + str(i)))
+                    newgear = gearbox(w_out[problem], gearcheck.w_cout, (gearcheck.mfgplan + "P" + str(i)))
                     treeSearch.append(newgear)
-                    # print("adding P" + str(i))
+                    #print("adding P" + str(i))
                     childrenadded = childrenadded + 1
 
             # if childrenadded == 0:

@@ -70,6 +70,7 @@ def main():
 		branchingFactor = []
 		prev = []
 		count = 0
+		c = 0
 
 		while error == 2.5:
 			count = count + 1
@@ -128,13 +129,15 @@ def main():
 			#else:
 			#	depth = depth + 1
 			#print(str(count) + "loop moving to depth" + str(depth))
-			branchingFactor.insert(count-1,childrenadded)
+			if not childrenadded == 0:
+				c = c + 1
+				branchingFactor.insert(c-1,childrenadded)
 
 		print("The solution for problem " + str(problem) + " is " + gearcheck.mfgplan)
 		x = 0
 		for n in range(0, len(branchingFactor)-1, 1):
 			x = x + branchingFactor[n]
-		print(x/(len(branchingFactor)+1))
+		print("The branching factor is " + str(x/(len(branchingFactor)+1)))
 
 	
 main()

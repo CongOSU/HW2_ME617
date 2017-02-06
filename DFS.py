@@ -56,7 +56,7 @@ def main():
 	
 	#Problem Inputs
 	w_in = 100
-	w_out = [-117, 77, 377, -20, 2, -2345]
+	w_out = [-117, 77, 377, -20, -2345, 2]
 	
 
 	#Loop for DFS
